@@ -4,13 +4,13 @@
 [ext_resource type="Script" path="res://player.gd" id="1_j4uw8"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_nfmky"]
-size = Vector2(64, 64)
+size = Vector2(32, 32)
 
 [node name="Player" type="CharacterBody2D"]
 script = ExtResource("1_j4uw8")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-scale = Vector2(0.5, 0.5)
+scale = Vector2(0.25, 0.25)
 texture = ExtResource("1_1glha")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
