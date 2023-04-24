@@ -1,9 +1,15 @@
-[gd_scene load_steps=5 format=3 uid="uid://bmxfc62h16xar"]
+[gd_scene load_steps=7 format=3 uid="uid://bmxfc62h16xar"]
 
 [ext_resource type="Script" path="res://world.gd" id="1_8go7g"]
 [ext_resource type="Script" path="res://GameCamera.gd" id="1_atcv1"]
 [ext_resource type="PackedScene" uid="uid://b1oxnqd531xom" path="res://player.tscn" id="1_cybwt"]
 [ext_resource type="PackedScene" uid="uid://di18t5mkufyqj" path="res://movingplatform.tscn" id="4_wrnd3"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_cy7d1"]
+size = Vector2(360, 20)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_i7yr7"]
+size = Vector2(20, 1000)
 
 [node name="World" type="Node2D"]
 script = ExtResource("1_8go7g")
@@ -12,6 +18,25 @@ script = ExtResource("1_8go7g")
 position = Vector2(180, 0)
 offset = Vector2(0, 400)
 script = ExtResource("1_atcv1")
+
+[node name="Killbox" type="Area2D" parent="GameCamera"]
+position = Vector2(0, 850)
+collision_layer = 2
+collision_mask = 4
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="GameCamera/Killbox"]
+shape = SubResource("RectangleShape2D_cy7d1")
+
+[node name="Boundary" type="StaticBody2D" parent="GameCamera"]
+collision_mask = 5
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="GameCamera/Boundary"]
+position = Vector2(-190, 400)
+shape = SubResource("RectangleShape2D_i7yr7")
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="GameCamera/Boundary"]
+position = Vector2(190, 400)
+shape = SubResource("RectangleShape2D_i7yr7")
 
 [node name="Player" parent="." instance=ExtResource("1_cybwt")]
 position = Vector2(188, 701)
@@ -27,3 +52,41 @@ position = Vector2(186, 758)
 offset_right = 40.0
 offset_bottom = 23.0
 text = "Score: 0"
+
+[node name="GameOverContainer" type="CenterContainer" parent="CanvasLayer"]
+visible = false
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/GameOverContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="CanvasLayer/GameOverContainer/VBoxContainer"]
+layout_mode = 2
+text = "Game over!
+Final score: ???"
+horizontal_alignment = 1
+
+[node name="PlayAgainButton" type="Button" parent="CanvasLayer/GameOverContainer/VBoxContainer"]
+layout_mode = 2
+text = "Play Again"
+
+[node name="QuitButton" type="Button" parent="CanvasLayer/GameOverContainer/VBoxContainer"]
+layout_mode = 2
+text = "Quit"
+
+[connection signal="body_entered" from="GameCamera/Killbox" to="Player" method="_on_killbox_body_entered"]
+[connection signal="game_over" from="Player" to="." method="_on_player_game_over"]
+[connection signal="score_increased" from="Player" to="." method="_on_player_score_increased"]
+[connection signal="pressed" from="CanvasLayer/GameOverContainer/VBoxContainer/QuitButton" to="." method="_on_quit_button_pressed"]

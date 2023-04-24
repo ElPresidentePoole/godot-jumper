@@ -4,6 +4,7 @@ const MIN_X = 32
 const MAX_X = 328
 var moving_speed = 100
 var moving_right = true
+var score_counted = false
 
 # Called when the node enters the scene tree for the first time.
 func _ready():

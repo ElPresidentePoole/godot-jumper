@@ -20,3 +20,9 @@ config/icon="res://icon.svg"
 window/size/viewport_width=360
 window/size/viewport_height=800
 window/handheld/orientation=1
+
+[layer_names]
+
+2d_physics/layer_1="platform"
+2d_physics/layer_2="killbox"
+2d_physics/layer_3="player"
